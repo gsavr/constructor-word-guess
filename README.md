@@ -28,12 +28,12 @@ LIRI will search Spotify for songs, Bands in Town for concerts, and OMDB for mov
 
 **When the word is guessed**
 
-    * PLayer goes up a level and is prompted to continue playing
+    * Player goes up a level and is prompted to continue playing
 
 **When player runs out of guesses(0)**
 
     * The game is over
-    * player is asked to start game again 
+    * Player is asked to start game again 
 
 **Technologies Used**
 
