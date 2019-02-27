@@ -7,9 +7,8 @@ var newWord;
 var plays=0;
 var pickedWords=[];
 var pickedLetters=[];
-var guesses=0;
-var words=["Radiohead"]
-//var words=["Radiohead","Red Hot Chilli Peppers","Nirvava","Pearl Jam","Weezer","Green Day","Coldplay","Foo Fighters","Muse","The Killers","Artic Monkeys","The Strokes","No Doubt","Arcade Fire"]
+var guesses=10;
+var words=["Radiohead","Red Hot Chilli Peppers","Nirvana","Pearl Jam","Weezer","Green Day","Coldplay","Foo Fighters","Muse","The Killers","Artic Monkeys","The Strokes","No Doubt","Arcade Fire"]
 
 function start(){
     CFonts.say("alt bands\nhangman", {
@@ -31,23 +30,20 @@ function start(){
         else{
             console.log("\nCome back anytime!\n")
         }
+    }).catch(function(err){
+        console.log(err)
     });
 }
 
 function playGame(){
     plays++;
+    console.log("Game #: "+plays)
     guesses=10;
     pickedLetters=[];
-    if(plays<6){
-        currentWord=chooseWord();
-        newWord=new Word(currentWord);
-        newWord.wordSplit();
-        //console.log(newWord)
-        playerGuess()
-    }
-    if(plays>5){
-        win()
-    }
+    currentWord=chooseWord();
+    newWord=new Word(currentWord);
+    newWord.wordSplit();
+    playerGuess()
 }
 
 function chooseWord(){
@@ -82,12 +78,8 @@ function playerGuess(){
             userInput=".";
             gussesLeft()
         }
-     
-    })
-    .catch(function(err) {
-        if (err) {
-          console.log("error.response.data");
-        }
+    }).catch(function(err){
+        console.log(err)
     });
 };
 
@@ -128,7 +120,25 @@ function win(){
         font: 'simple',   
         colors: ['magenta'], 
     });
-    playAgain()
+    if(plays===1){
+        console.log("You've reached Rock Novice Level!\n")
+    }
+    if(plays===2){
+        console.log("You've reached Rock Enthusiast Level!\n")
+    }
+    if(plays===3){
+        console.log("You've reached Rock Roadie Level!\n")
+    }
+    if(plays<4){
+        playAgain()
+    }
+    else{
+        CFonts.say("rock master\nlevel", {
+            font: 'simple',   
+            colors: ['cyan'], 
+        });
+        restart()
+    }
 }
 
 function lose(){
@@ -136,33 +146,59 @@ function lose(){
         font: 'simple',   
         colors: ['magenta'], 
     });
-    playAgain()
+    restart()
 }
 
 function playAgain(){
     inquirer.prompt([
         {
             type: "confirm",
-            message: "Would you like to try again?",
+            message: "Would you like to play again?",
             name: "confirm",
             default: true
         },
     ])
     .then(function(inquirerResponse) {
         if(inquirerResponse.confirm){
-            start();
-            console.log("\nPlease run --node index.js\n")
+            playGame();
         }
         else{
             console.log("\nCome back anytime!\n")
         }
+    }).catch(function(err){
+        console.log(err)
     });
 }
 
 function restart(){
-    currentWord="";
-    plays=0;
-    playGame()
+    CFonts.say("GAME OVER", {
+        font: 'chrome', 
+        align: 'left',  
+        colors: ['magenta','magenta'], 
+    });
+    inquirer.prompt([
+        {
+            type: "confirm",
+            message: CFonts.say("Would you like to start again?", {
+                font: 'console', 
+                align: 'left',  
+                colors: ['magenta'], 
+            }),
+            name: "confirm",
+            default: true
+        },
+    ])
+    .then(function(inquirerResponse) {
+        if(inquirerResponse.confirm){
+            plays=0;
+            start()
+        }
+        else{
+            console.log("\nCome back anytime!\n")
+        }
+    }).catch(function(err){
+        console.log(err)
+    });
 }
 
 start()
