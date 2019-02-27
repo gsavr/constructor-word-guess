@@ -1,6 +1,6 @@
 # constructor-word-guess
 
-LIRI will search Spotify for songs, Bands in Town for concerts, and OMDB for movies.
+Guess the name of your favorite Alternative Bands in this hangman style game!
 
 **Gameplay Preview**
 
